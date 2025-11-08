@@ -24,5 +24,5 @@ variable "public_key_path" {
 variable "allowed_ip" {
   description = "CIDR allowed for SSH access (your IP)"
   type        = string
-  default     = "0.0.0.0/0" # replace with your IP for security
+  default     = "16.170.205.81/32" # replace with your IP for security
 }
