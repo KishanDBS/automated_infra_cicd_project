@@ -7,6 +7,7 @@ variable "region" {
 variable "key_name" {
   description = "Existing AWS key pair name to use for EC2 SSH access"
   type        = string
+  Default     = "cicd-demo"
 }
 
 variable "instance_type" {
