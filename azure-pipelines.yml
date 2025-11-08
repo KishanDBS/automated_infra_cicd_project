@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'sample-flask'
+
+steps:
+- task: Docker@2
+  displayName: Build and push image
+  inputs:
+    command: buildAndPush
+    repository: $(DOCKERHUB_USERNAME)/$(imageName)
+    dockerfile: app/Dockerfile
+    containerRegistry: 'DockerHubConnection'
+    tags: |
+      latest
+
+- task: SSH@0
+  displayName: Deploy to server
+  inputs:
+    sshEndpoint: 'MyServerSSHServiceConnection'
+    runOptions: commands
+    commands: |
+      cd /opt/sample_app || mkdir -p /opt/sample_app
+      docker-compose -f /opt/sample_app/docker-compose.yml pull || true
+      docker-compose -f /opt/sample_app/docker-compose.yml up -d --build
